@@ -24,12 +24,12 @@ export const DataTable = ({
 }) => {
   return (
     <TableContainer>
-      <Table variant="simple">
+      <Table variant="striped" colorScheme="gray" size="md">
         <TableCaption>{caption}</TableCaption>
-        <Thead>
+        <Thead backgroundColor="darkgray">
           <Tr>
             {columns.map(({ header, isNumeric }, i) => (
-              <Th key={i} isNumeric={isNumeric}>
+              <Th key={i} isNumeric={isNumeric} color="white">
                 {header}
               </Th>
             ))}
