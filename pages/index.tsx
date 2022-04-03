@@ -1,22 +1,38 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Link } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { DataTable } from "../components/DataTable";
 
 const Home: NextPage = () => {
   return (
-    <Box width="800px" margin="100px auto">
+    <Box width="80%" margin="100px auto">
       <DataTable
-        caption="Imperial to metric conversion factors"
         columns={[
-          { header: "To convert" },
-          { header: "into" },
-          { header: "multiply by" },
+          {
+            Header: "To convert",
+            accessor: "from",
+            width: "100px",
+            overflow: "hidden",
+            Cell: ({ value }: { value: string }) => (
+              <Link href="#" color="blue.400">
+                {value}
+              </Link>
+            ),
+          },
+          {
+            Header: "into",
+            accessor: "to",
+          },
+          {
+            Header: "multiply by",
+            accessor: "value",
+          },
         ]}
-        rows={[
-          ["inches", "millimetres (mm)", 25.4],
-          ["feet", "centimetres (cm)", 30.48],
-          ["yards", "metres (m)", 0.91444],
+        data={[
+          { from: "inches", to: "millimetres (mm)", value: 25.4 },
+          { from: "feet", to: "centimetres (cm)", value: 30.48 },
+          { from: "yards", to: "metres (m)", value: 0.91444 },
         ]}
+        onRowClick={(obj) => console.log(obj)}
       />
     </Box>
   );
