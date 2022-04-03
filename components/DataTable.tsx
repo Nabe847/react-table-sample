@@ -16,8 +16,9 @@ type OnRowClick<T extends object> = (row: T) => void;
 
 export type DataTableColumn<T extends object> = {
   readonly Header: string;
-  readonly accessor: keyof T;
+  readonly accessor: Extract<keyof T, string>;
   readonly width?: string;
+  readonly hidden?: boolean;
   readonly overflow?: Overflow;
   readonly Cell?: ({ value }: { value: any }) => ReactJSXElement;
 };
@@ -125,7 +126,14 @@ export const DataTable = <T extends object>({
   data: T[];
   onRowClick?: OnRowClick<T>;
 }) => {
-  const tableInstance = useTable({ columns, data });
+  const tableInstance = useTable({
+    columns,
+    data,
+    initialState: {
+      hiddenColumns: columns.filter((c) => c.hidden).map((c) => c.accessor),
+    },
+  });
+
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableInstance;
 

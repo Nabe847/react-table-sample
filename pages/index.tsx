@@ -8,6 +8,11 @@ const Home: NextPage = () => {
       <DataTable
         columns={[
           {
+            Header: "",
+            accessor: "id",
+            hidden: true,
+          },
+          {
             Header: "To convert",
             accessor: "from",
             width: "100px",
@@ -28,9 +33,9 @@ const Home: NextPage = () => {
           },
         ]}
         data={[
-          { from: "inches", to: "millimetres (mm)", value: 25.4 },
-          { from: "feet", to: "centimetres (cm)", value: 30.48 },
-          { from: "yards", to: "metres (m)", value: 0.91444 },
+          { id: 1, from: "inches", to: "millimetres (mm)", value: 25.4 },
+          { id: 2, from: "feet", to: "centimetres (cm)", value: 30.48 },
+          { id: 3, from: "yards", to: "metres (m)", value: 0.91444 },
         ]}
         onRowClick={(obj) => console.log(obj)}
       />
