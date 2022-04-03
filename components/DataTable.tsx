@@ -11,6 +11,7 @@ import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
 import { Cell, HeaderGroup, Row, TableBodyProps, useTable } from "react-table";
 
 type Overflow = "visible" | "hidden";
+
 type OnRowClick<T extends object> = (row: T) => void;
 
 export type DataTableColumn<T extends object> = {
@@ -23,25 +24,38 @@ export type DataTableColumn<T extends object> = {
 
 const TableHeader = <T extends object>({
   headerGroups,
+  color,
+  backgroundColor,
 }: {
   headerGroups: HeaderGroup<T>[];
+  color: string;
+  backgroundColor: string;
 }) => (
-  <Thead backgroundColor="darkgray">
+  <Thead backgroundColor={backgroundColor}>
     {headerGroups.map((headerGroup, i) => (
       <Tr {...headerGroup.getHeaderGroupProps()} key={i}>
         {headerGroup.headers.map((header: HeaderGroup<T>, j) => (
-          <Th
-            {...header.getHeaderProps()}
-            key={j}
-            color="white"
-            width={(header as unknown as DataTableColumn<T>).width}
-          >
-            {header.render("Header")}
-          </Th>
+          <TableHeaderCell key={j} header={header} color={color} />
         ))}
       </Tr>
     ))}
   </Thead>
+);
+
+const TableHeaderCell = <T extends object>({
+  header,
+  color,
+}: {
+  header: HeaderGroup<T>;
+  color: string;
+}) => (
+  <Th
+    {...header.getHeaderProps()}
+    color={color}
+    width={(header as unknown as DataTableColumn<T>).width}
+  >
+    {header.render("Header")}
+  </Th>
 );
 
 const TableBody = <T extends object>({
@@ -52,7 +66,7 @@ const TableBody = <T extends object>({
   prepareRow,
 }: {
   tableBodyProps: TableBodyProps;
-  columns: readonly DataTableColumn<T>[];
+  columns: DataTableColumn<T>[];
   rows: Row<T>[];
   onRowClick?: OnRowClick<T>;
   prepareRow: (row: Row<T>) => void;
@@ -64,8 +78,8 @@ const TableBody = <T extends object>({
         <Tr
           {...row.getRowProps()}
           key={i_row}
-          _hover={{ opacity: 0.5 }}
           onClick={() => onRowClick && onRowClick(row.values as T)}
+          _hover={{ opacity: 0.5 }}
         >
           {row.cells.map((cell, i_cell) => (
             <TableCell
@@ -107,7 +121,7 @@ export const DataTable = <T extends object>({
   data,
   onRowClick,
 }: {
-  columns: readonly DataTableColumn<T>[];
+  columns: DataTableColumn<T>[];
   data: T[];
   onRowClick?: OnRowClick<T>;
 }) => {
@@ -124,7 +138,11 @@ export const DataTable = <T extends object>({
         css={{ tableLayout: "fixed" }}
         {...getTableProps()}
       >
-        <TableHeader headerGroups={headerGroups} />
+        <TableHeader
+          headerGroups={headerGroups}
+          color="white"
+          backgroundColor="gray"
+        />
         <TableBody
           tableBodyProps={getTableBodyProps()}
           columns={columns}
